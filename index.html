@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal BioStat Razetti | Salud Pública UCV</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --ucv-blue: #002855;
+            --ucv-gold: #F2A900;
+            --deep-dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --text-light: #f8fafc;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--deep-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #0f172a; }
+
+        /* Ajuste para el Header Integrado */
+        .header-wrapper {
+            padding: 20px 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .emoji { width: 1em; height: 1em; vertical-align: -0.1em; }
+
+        /* BUSCADOR Y FILTROS */
+        .filter-container {
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        .search-box:focus { border-color: var(--ucv-gold); background: rgba(255,255,255,0.1); }
+
+        .filter-label { font-size: 0.75rem; text-transform: uppercase; color: var(--ucv-gold); margin: 15px 0 8px; letter-spacing: 1px; font-weight: bold; }
+
+        .filter-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .chip {
+            padding: 6px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.3s;
+            color: #94a3b8;
+        }
+        .chip.active { background: var(--ucv-gold); color: var(--ucv-blue); border-color: var(--ucv-gold); font-weight: bold; }
+
+        /* GRID DE FICHAS */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            padding: 0 5% 5rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .sim-card {
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+        }
+        .sim-card.hidden { display: none; }
+        .sim-card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--ucv-gold); 
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        .badge-container { display: flex; gap: 6px; margin-bottom: 1rem; }
+        .badge { font-size: 0.65rem; padding: 3px 8px; border-radius: 3px; font-weight: bold; }
+        .badge-nivel { background: var(--ucv-blue); color: white; border: 1px solid var(--ucv-gold); }
+        .badge-tema { background: rgba(242, 169, 0, 0.1); color: var(--ucv-gold); }
+
+        .sim-card h2 { font-size: 1.4rem; color: white; margin-bottom: 0.5rem; }
+        .sim-card p { font-size: 0.9rem; color: #94a3b8; line-height: 1.5; }
+
+        .syllabus {
+            max-height: 0; opacity: 0; overflow: hidden; transition: 0.4s;
+        }
+        .sim-card:hover .syllabus { max-height: 200px; opacity: 1; margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; }
+
+        .syllabus li { list-style: none; font-size: 0.85rem; margin-bottom: 5px; color: #cbd5e1; display: flex; align-items: center; gap: 8px; }
+
+        footer { text-align: center; padding: 3rem; color: #475569; font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.05); }
+
+    </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="header-wrapper">
+    <header class="wp-block-template-part">
+        <a href="https://saludpublicarazetti5.wordpress.com/" target="_blank" rel="noopener noreferrer" style="display: flex;align-items: center;gap: 20px;padding: 20px;background: #ffffff;border-radius: 4px;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;text-decoration: none;border: 1px solid #d1d5db;max-width: 500px;margin: 0 auto">
+            <div style="position: relative;width: 60px;height: 60px;flex-shrink: 0;background: #1e293b;border-radius: 50%;display: flex;align-items: center;justify-content: center">
+                <span style="color: #ffffff;font-size: 28px;font-weight: 300"><img draggable="false" role="img" class="emoji" alt="⚕" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/2695.svg"></span>
+                <div style="position: absolute;bottom: -2px;right: -2px;background: #ffffff;border: 1px solid #1e293b;border-radius: 50%;width: 22px;height: 22px;display: flex;align-items: center;justify-content: center;font-size: 12px;color: #1e293b">
+                    <img draggable="false" role="img" class="emoji" alt="🌐" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/1f310.svg">
+                </div>
+            </div>
+            <div style="border-left: 1px solid #1e293b;padding-left: 20px;display: flex;flex-direction: column">
+                <span style="font-size: 10px;text-transform: uppercase;letter-spacing: 2px;color: #64748b;font-weight: 600;line-height: 1">Cátedra de</span>
+                <h2 style="margin: 5px 0;font-size: 20px;color: #1e293b;font-weight: 700;line-height: 1.1;border: none;letter-spacing: -0.5px">SALUD PÚBLICA RAZETTI</h2>
+                <div style="margin-top: 5px;display: flex;align-items: center;gap: 10px">
+                    <span style="font-size: 9px;color: #1e293b;font-weight: 700;text-transform: uppercase;letter-spacing: 1px;border: 1px solid #1e293b;padding: 1px 6px;border-radius: 2px">DPTO. MEDICINA PREVENTIVA Y SOCIAL</span>
+                </div>
+            </div>
+        </a>
+    </header>
+</div>
+
+<div class="filter-container">
+    <input type="text" id="mainSearch" class="search-box" placeholder="Buscar simulador (ej: Boxplot, Muestreo, SP1...)">
+    
+    <div class="filter-label">Nivel de Instrucción</div>
+    <div class="filter-group" id="nivelFilters">
+        <div class="chip active" data-filter="all">Todos</div>
+        <div class="chip" data-filter="SP1">SP1</div>
+        <div class="chip" data-filter="SP2">SP2</div>
+        <div class="chip" data-filter="SP3">SP3</div>
+        <div class="chip" data-filter="SP4">SP4</div>
+        <div class="chip" data-filter="SP5">SP5</div>
+        <div class="chip" data-filter="SP6">SP6</div>
+        <div class="chip" data-filter="Posgrado">Posgrado</div>
+    </div>
+
+    <div class="filter-label">Área Temática</div>
+    <div class="filter-group" id="temaFilters">
+        <div class="chip active" data-filter="all">Todas</div>
+        <div class="chip" data-filter="ESTADÍSTICA DESCRIPTIVA">Estadística Descriptiva</div>
+        <div class="chip" data-filter="ESTADÍSTICA INFERENCIAL">Estadística Inferencial</div>
+        <div class="chip" data-filter="EPIDEMIOLOGÍA">Epidemiología</div>
+        <div class="chip" data-filter="BIOÉTICA">Bioética</div>
+    </div>
+</div>
+
+<div class="hub-grid" id="simGrid">
+    <div class="sim-card" data-niveles="SP1,SP2" data-temas="ESTADÍSTICA DESCRIPTIVA">
+        <div class="badge-container">
+            <span class="badge badge-nivel">SP1 - SP2</span>
+            <span class="badge badge-tema">Estadística Descriptiva</span>
+        </div>
+        <h2>Análisis Cuantitativo</h2>
+        <p>Laboratorio de frecuencias, medidas de resumen y visualización de datos biomédicos.</p>
+        <div class="syllabus">
+            <ul>
+                <li><i class="fas fa-check-circle"></i> Histogramas interactivos</li>
+                <li><i class="fas fa-check-circle"></i> Interpretación de Boxplots</li>
+                <li><i class="fas fa-check-circle"></i> Sesgo y Variabilidad</li>
+            </ul>
+            <a href="eo.html" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Entrar al Laboratorio</a>
+        </div>
+    </div>
+
+    <div class="sim-card" data-niveles="SP3,SP4" data-temas="EPIDEMIOLOGÍA">
+        <div class="badge-container">
+            <span class="badge badge-nivel">SP3</span>
+            <span class="badge badge-tema">Epidemiología</span>
+        </div>
+        <h2>Dinámicas de Muestreo</h2>
+        <p>Exploración visual de la jerarquía Universo-Población-Muestra y Escalas de Medición.</p>
+        <div class="syllabus">
+            <ul>
+                <li><i class="fas fa-check-circle"></i> Diagramas de Venn dinámicos</li>
+                <li><i class="fas fa-check-circle"></i> Escalas Nominal a Razón</li>
+            </ul>
+            <a href="eo.html#tab-teoria" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Ver Módulo Teórico</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 Cátedra de Salud Pública Razetti - Escuela Luis Razetti, UCV.</p>
+</footer>
+
+<script>
+    // Lógica de Filtrado
+    const searchInput = document.getElementById('mainSearch');
+    const chips = document.querySelectorAll('.chip');
+    const cards = document.querySelectorAll('.sim-card');
+
+    let activeNivel = 'all';
+    let activeTema = 'all';
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chip.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            if(chip.parentElement.id === 'nivelFilters') activeNivel = chip.dataset.filter;
+            if(chip.parentElement.id === 'temaFilters') activeTema = chip.dataset.filter;
+            applyFilters();
+        });
+    });
+
+    searchInput.addEventListener('input', applyFilters);
+
+    function applyFilters() {
+        const text = searchInput.value.toLowerCase();
+        cards.forEach(card => {
+            const matchesNivel = activeNivel === 'all' || card.dataset.niveles.includes(activeNivel);
+            const matchesTema = activeTema === 'all' || card.dataset.temas.includes(activeTema);
+            const matchesSearch = card.innerText.toLowerCase().includes(text);
+            card.classList.toggle('hidden', !(matchesNivel && matchesTema && matchesSearch));
+        });
+    }
+
+    // Partículas Fondo
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let ps = [];
+    function init() {
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        ps = Array.from({length:50}, () => ({x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.2}));
+    }
+    function draw() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = "rgba(242,169,0,0.15)";
+        ps.forEach(p => {
+            ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); ctx.fill();
+            p.x += p.vx; p.y += p.vy;
+            if(p.x<0||p.x>canvas.width) p.vx*=-1; if(p.y<0||p.y>canvas.height) p.vy*=-1;
+        });
+        requestAnimationFrame(draw);
+    }
+    init(); draw();
+    window.onresize = init;
+</script>
+
+</body>
+</html>
