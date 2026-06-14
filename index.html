@@ -116,9 +116,26 @@
         .syllabus {
             max-height: 0; opacity: 0; overflow: hidden; transition: 0.4s;
         }
-        .sim-card:hover .syllabus { max-height: 200px; opacity: 1; margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; }
+        .sim-card:hover .syllabus { max-height: 250px; opacity: 1; margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; }
 
         .syllabus li { list-style: none; font-size: 0.85rem; margin-bottom: 5px; color: #cbd5e1; display: flex; align-items: center; gap: 8px; }
+
+        /* Estilo optimizado para los botones de las tarjetas */
+        .btn-link {
+            display: block; 
+            margin-top: 15px; 
+            background: var(--ucv-gold); 
+            color: var(--ucv-blue); 
+            padding: 10px; 
+            border-radius: 8px; 
+            text-align: center; 
+            text-decoration: none; 
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        .btn-link:hover {
+            background: #ffbc1a;
+        }
 
         footer { text-align: center; padding: 3rem; color: #475569; font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.05); }
 
@@ -172,6 +189,11 @@
         <div class="chip" data-filter="BIOÉTICA">Bioética</div>
     </div>
 </div>
+
+<!-- CONTENEDOR GRID: Este div es el que agrupaba y faltaba en tu código original -->
+<div class="hub-grid">
+
+    <!-- Tarjeta 1 -->
     <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
         <div class="badge-container">
             <span class="badge badge-nivel">SP1</span>
@@ -183,10 +205,13 @@
             <ul>
                 <li><i class="fas fa-check-circle"></i> Exploración visual de Medidas de Tendencia Central</li>
                 <li><i class="fas fa-check-circle"></i> Diagramas de Venn dinámicos para Universo, Población y Muestra</li>
-                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica (de Nominal a Razón)</li>
+                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica</li>
             </ul>
-            <a href="https://sprazetti.github.io/sp1_simuladores/mtc.html" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Ver Módulo Teórico</a>
+            <a href="https://sprazetti.github.io/sp1_simuladores/mtc.html" class="btn-link">Ver Módulo Teórico</a>
         </div>
+    </div>
+
+    <!-- Tarjeta 2 -->
     <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
         <div class="badge-container">
             <span class="badge badge-nivel">SP1</span>
@@ -198,76 +223,68 @@
             <ul>
                 <li><i class="fas fa-check-circle"></i> Exploración visual de Medidas de Tendencia Central</li>
                 <li><i class="fas fa-check-circle"></i> Diagramas de Venn dinámicos para Universo, Población y Muestra</li>
-                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica (de Nominal a Razón)</li>
+                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica</li>
             </ul>
-            <a href="https://docs.google.com/spreadsheets/d/1bFra4rlikpigK94JWoks6CNUzdS25SM_coS630eUgbo/edit?usp=sharing" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Ver Módulo Teórico</a>
+            <a href="https://docs.google.com/spreadsheets/d/1bFra4rlikpigK94JWoks6CNUzdS25SM_coS630eUgbo/edit?usp=sharing" class="btn-link" target="_blank">Ver Ejercicio Práctico</a>
         </div>
-        <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
-            <div class="badge-container">
-                <span class="badge badge-nivel">SP1</span>
-                <span class="badge badge-tema">Estadística Descriptiva</span>
     </div>
+
+    <!-- Tarjeta 3 -->
     <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
+        <div class="badge-container">
+            <span class="badge badge-nivel">SP1</span>
+            <span class="badge badge-tema">Estadística Descriptiva</span>
+        </div>
         <h2>EJERCICIO DE TABULACION #2 | Dra. Skarly D´Wagner</h2>
         <p>Exploración visual de la jerarquía Universo-Población-Muestra y Escalas de Medición.</p>
         <div class="syllabus">
             <ul>
                 <li><i class="fas fa-check-circle"></i> Exploración visual de Medidas de Tendencia Central</li>
                 <li><i class="fas fa-check-circle"></i> Diagramas de Venn dinámicos para Universo, Población y Muestra</li>
-                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica (de Nominal a Razón)</li>
+                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica</li>
             </ul>
-            <a href="https://docs.google.com/spreadsheets/d/1oVCSw0Xbv0iqneFoQVc4vva64OLHHLz2O0iy4e0mCrM/edit?usp=sharing" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Ver Módulo Teórico</a>
+            <a href="https://docs.google.com/spreadsheets/d/1oVCSw0Xbv0iqneFoQVc4vva64OLHHLz2O0iy4e0mCrM/edit?usp=sharing" class="btn-link" target="_blank">Ver Ejercicio Práctico</a>
         </div>
+    </div>
+
+    <!-- Tarjeta 4 -->
     <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
         <div class="badge-container">
             <span class="badge badge-nivel">SP1</span>
             <span class="badge badge-tema">Estadística Descriptiva</span>
         </div>
-    <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
         <h2>EJERCICIO DE TABULACION #3 | Dra. Skarly D´Wagner</h2>
         <p>Exploración visual de la jerarquía Universo-Población-Muestra y Escalas de Medición.</p>
         <div class="syllabus">
             <ul>
                 <li><i class="fas fa-check-circle"></i> Exploración visual de Medidas de Tendencia Central</li>
                 <li><i class="fas fa-check-circle"></i> Diagramas de Venn dinámicos para Universo, Población y Muestra</li>
-                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica (de Nominal a Razón)</li>
+                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica</li>
             </ul>
-            <a href="https://docs.google.com/spreadsheets/d/1EvQJMNGYuzTEBSUEMGpcpCwoY_KWb6ZEVGcH2GL6Il0/edit?usp=sharing" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Ver Módulo Teórico</a>
+            <a href="https://docs.google.com/spreadsheets/d/1EvQJMNGYuzTEBSUEMGpcpCwoY_KWb6ZEVGcH2GL6Il0/edit?usp=sharing" class="btn-link" target="_blank">Ver Ejercicio Práctico</a>
         </div>
+    </div>
+
+    <!-- Tarjeta 5 -->
     <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
         <div class="badge-container">
             <span class="badge badge-nivel">SP1</span>
             <span class="badge badge-tema">Estadística Descriptiva</span>
         </div>
-    <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
-        <h2>MEDIDAS DE TENDENCIA CENTRAL | Dra. Skarly D´Wagner</h2>
-        <p>Exploración visual de la jerarquía Universo-Población-Muestra y Escalas de Medición.</p>
-        <div class="syllabus">
-            <ul>
-                <li><i class="fas fa-check-circle"></i> Exploración visual de Medidas de Tendencia Central</li>
-                <li><i class="fas fa-check-circle"></i> Diagramas de Venn dinámicos para Universo, Población y Muestra</li>
-                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica (de Nominal a Razón)</li>
-            </ul>
-            <a href="https://sprazetti.github.io/sp1_simuladores/mtc.html" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Ver Módulo Teórico</a>
-        </div>
-    <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
-        <div class="badge-container">
-            <span class="badge badge-nivel">SP1</span>
-            <span class="badge badge-tema">Estadística Descriptiva</span>
-        </div>
-    <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
         <h2>EJERCICIO DE TABULACION #4 | Dra. Skarly D´Wagner</h2>
         <p>Exploración visual de la jerarquía Universo-Población-Muestra y Escalas de Medición.</p>
         <div class="syllabus">
             <ul>
                 <li><i class="fas fa-check-circle"></i> Exploración visual de Medidas de Tendencia Central</li>
                 <li><i class="fas fa-check-circle"></i> Diagramas de Venn dinámicos para Universo, Población y Muestra</li>
-                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica (de Nominal a Razón)</li>
+                <li><i class="fas fa-check-circle"></i> Escalas de Medición con aproximación gráfica</li>
             </ul>
-            <a href="https://docs.google.com/spreadsheets/d/1y1EAtp5X2waBAfVbo0kPMSIf9rY3D29Dw52Tevj9grI/edit?usp=sharing" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Ver Módulo Teórico</a>
+            <a href="https://docs.google.com/spreadsheets/d/1y1EAtp5X2waBAfVbo0kPMSIf9rY3D29Dw52Tevj9grI/edit?usp=sharing" class="btn-link" target="_blank">Ver Ejercicio Práctico</a>
         </div>
     </div>
-   <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
+
+    <!-- Tarjeta 6 -->
+    <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
         <div class="badge-container">
             <span class="badge badge-nivel">SP1</span>
             <span class="badge badge-tema">Estadística Descriptiva</span>
@@ -278,11 +295,15 @@
             <ul>
                 <li><i class="fas fa-check-circle"></i> Exploracion de las fracciones fundamentales: razon, proporcion y porcentaje</li>
                 <li><i class="fas fa-check-circle"></i> Conceptualizacion del Numero Indice</li>
-                <li><i class="fas fa-check-circle"></i> Profundizacion acerca de la utilidad practica de los Coeficientes como indicadores de gestion y rendimiento en salud publica</li>
+                <li><i class="fas fa-check-circle"></i> Profundizacion acerca de la utilidad practica de los Coeficientes en salud publica</li>
             </ul>
-            <a href="https://sprazetti.github.io/sp1_simuladores/tema7.html" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Ver Módulo Teórico</a>
+            <a href="https://sprazetti.github.io/sp1_simuladores/tema7.html" class="btn-link">Ver Módulo Teórico</a>
         </div>
-         <div class="badge-container">
+    </div>
+
+    <!-- Tarjeta 7 -->
+    <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
+        <div class="badge-container">
             <span class="badge badge-nivel">SP1</span>
             <span class="badge badge-tema">Estadística Descriptiva</span>
         </div>
@@ -292,11 +313,13 @@
             <ul>
                 <li><i class="fas fa-check-circle"></i> Exploracion de las fracciones fundamentales: razon, proporcion y porcentaje</li>
                 <li><i class="fas fa-check-circle"></i> Conceptualizacion del Numero Indice</li>
-                <li><i class="fas fa-check-circle"></i> Profundizacion acerca de la utilidad practica de los Coeficientes como indicadores de gestion y rendimiento en salud publica</li>
+                <li><i class="fas fa-check-circle"></i> Profundizacion acerca de la utilidad practica de los Coeficientes en salud publica</li>
             </ul>
-            <a href="https://docs.google.com/spreadsheets/d/1Hgcp9jITBw0ug9kNJIiQtjFLuKay6l0szqZzPZ3K4S4/edit?usp=sharing" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Ver Módulo Teórico</a>
+            <a href="https://docs.google.com/spreadsheets/d/1Hgcp9jITBw0ug9kNJIiQtjFLuKay6l0szqZzPZ3K4S4/edit?usp=sharing" class="btn-link" target="_blank">Ver Ejercicio Práctico</a>
         </div>
     </div>
+
+    <!-- Tarjeta 8 -->
     <div class="sim-card" data-niveles="SP1" data-temas="ESTADÍSTICA DESCRIPTIVA">
         <div class="badge-container">
             <span class="badge badge-nivel">SP1</span>
@@ -308,10 +331,11 @@
             <ul>
                 <li><i class="fas fa-check-circle"></i> Exploración visual del concepto de ERROR ESTANDAR</li>
             </ul>
-            <a href="https://sprazetti.github.io/sp1_simuladores/mtc2.html" style="display:block; margin-top:15px; background:var(--ucv-gold); color:var(--ucv-blue); padding:10px; border-radius:8px; text-align:center; text-decoration:none; font-weight:bold;">Ver Módulo Teórico</a>
+            <a href="https://sprazetti.github.io/sp1_simuladores/mtc2.html" class="btn-link">Ver Módulo Teórico</a>
         </div>
     </div>
-</div>
+
+</div> <!-- Fin de .hub-grid -->
 
 <footer>
     <p>&copy; 2026 Cátedra de Salud Pública Razetti - Escuela Luis Razetti, UCV.</p>
